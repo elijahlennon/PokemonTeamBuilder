@@ -1,0 +1,81 @@
+﻿/* Style Reset */
+html, body, main {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+html {
+    font-family: sans-serif;
+}
+
+body {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+/* Team Elements */
+.team-container {
+    display: flex;
+    gap: 5px;
+}
+
+.team-member {
+    border: 1px solid black;
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+}
+
+/* Search/Filter Elements */
+input {
+    width: 300px;
+}
+
+#searchResults {
+    width: 307px;
+    max-height: 300px;
+    overflow: scroll;
+    border-radius: 2px;
+}
+
+#searchResults div {
+    text-transform: capitalize;
+    padding: 3px;
+    border-bottom: 1px solid #767676;
+    border-left: 1px solid #767676;
+    border-right: 1px solid #767676;
+    cursor: pointer;
+}
+
+#searchResults div:hover {
+    opacity: 0.5;
+}
+
+#searchResults div:nth-child(odd) {
+    color: white;
+    background-color: #d0d0d0;
+}
+
+#searchResults div:nth-child(even) {
+    color: #d0d0d0;
+    background-color: white;
+}
+
+.modal {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: white;
+    border: 1px solid;
+}
