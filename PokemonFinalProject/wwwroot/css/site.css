@@ -1,4 +1,6 @@
-﻿/* Style Reset */
+﻿/* CSS Box Model: https://www.w3schools.com/css/css_boxmodel.asp */
+
+/* Style Reset */
 html, body, main {
     height: 100%;
     width: 100%;
@@ -14,6 +16,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: url('https://wallpaper.dog/large/10987890.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
 }
 
 main {
@@ -78,4 +84,65 @@ input {
     height: 500px;
     background: white;
     border: 1px solid;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.types {
+    display: flex;
+    gap: 20px;
+}
+
+.capsule {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    border: 1px solid;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+.abilities {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    text-transform: uppercase;
+}
+
+.details {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    text-transform: capitalize;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+img {
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    box-shadow: rgb(0 0 0 / 35%) 0px 0px 10px;
 }
