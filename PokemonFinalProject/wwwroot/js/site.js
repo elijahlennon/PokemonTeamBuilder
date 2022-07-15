@@ -72,7 +72,7 @@ const createModal = (data) => {
     modal.className = "modal";
 
     // -- DIV HEADER
-
+    // add pokemon button and exit button 
     modal.innerHTML += `
         <div class='modal-header'>
             <button onclick='addPokemon()'>Add Pokemon</button>
@@ -81,7 +81,7 @@ const createModal = (data) => {
     `;
 
     // -- DIV BODY
-
+    //Add image, height, and weight 
     let details = "";
     details += `<div class='left'>
                     <img alt="Image of Pokemon" src=${data.sprites.front_default} />
@@ -90,7 +90,7 @@ const createModal = (data) => {
     details += `<div>${data.name.replaceAll('-', ' ')}</div>`;
     details += `<div>Height: ${data.height}</div>`;
     details += `<div>Weight: ${data.weight}</div>`;
-    // Add pokemon types
+    // Add pokemon types and colors
     let types = "";
     data.types.forEach(type => {
         const name = type.type.name;
@@ -103,7 +103,7 @@ const createModal = (data) => {
                 color = "#ff9441";
                 break;
             case "water":
-                color = "#8bc5cd";
+                color = "#5a8ccd";
                 break;
             case "grass":
                 color = "#a4d641";
@@ -113,6 +113,42 @@ const createModal = (data) => {
                 break;
             case "poison":
                 color = "#eea5d5";
+                break;
+            case "flying":
+                color = "#ac7b5a";
+                break;
+            case "normal":
+                color = "#e6bd9c";
+                break;
+            case "fairy":
+                color = "#e67384";
+                break;
+            case "fighting":
+                color = "#bd314a";
+                break;
+            case "psychic":
+                color = "#6ab4e6";
+                break;
+            case "rock":
+                color = "#626a20";
+                break;
+            case "ground":
+                color = "#d5ac20";
+                break;
+            case "dark":
+                color = "#62637b";
+                break;
+            case "ice":
+                color = "#c5c6d6";
+                break;
+            case "dragon":
+                color = "#104a8b";
+                break;
+            case "ghost":
+                color = "#5a4b9c";
+                break;
+            case "steel":
+                color = "#ded5d5";
                 break;
             default:
                 color: "white";
