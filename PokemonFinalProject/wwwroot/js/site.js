@@ -5,6 +5,10 @@
 
 // Set pokedex outside of all methods so that it can be used globally
 let pokedex;
+let selectedPokemon;
+
+// Team Members array
+let teamMembers = [];
 
 // -- ON LOAD
 // This happens upon body load (Reference line 9 in _Layout.cshtml)
@@ -52,7 +56,39 @@ const fetchPokemonDetails = (event) => {
         .then(response => response.json()
             // Take converted results & pass them to the createModal method
             .then(result => {
-                createModal(result)
+                selectedPokemon = {
+                    name: result.name.replaceAll('-', ' '),
+                    image: result.sprites.front_default,
+                    height: result.height,
+                    weight: result.weight,
+                    types: [],
+                    stats: [],
+                    abilities: []
+                };
+
+                // Types
+                result.types.forEach(type => {
+                    selectedPokemon.types.push({
+                        name: type.type.name,
+                        color: determineTypeColor(type.type.name)
+                    })
+                })
+
+                // Stats
+                result.stats.forEach(stat => {
+                    selectedPokemon.stats.push({
+                        name: stat.stat.name.replaceAll("-", " "),
+                        stat: stat.base_stat
+                    })
+                })
+
+                // Abilities
+                result.abilities.forEach(ability => {
+                    ability = ability.ability.name.replaceAll("-", " ");
+                    selectedPokemon.abilities.push(ability)
+                })
+
+                createModal();
             }))
         // If an error occurs during any of the initial fetch or .then() methods,
         // this acts as a catch all & will catch the error, logging it to the console
@@ -63,7 +99,12 @@ const fetchPokemonDetails = (event) => {
 }
 
 // -- CREATE MODAL
-const createModal = (data) => {
+const createModal = (event) => {
+    let added = false;
+    if (event) {
+        added = true;
+        selectedPokemon = teamMembers[event.currentTarget.id];
+    }
     // Create a div and assign it to the variable "modal"
     const modal = document.createElement("div");
     // Add the id "modal" to the newly created div
@@ -72,93 +113,33 @@ const createModal = (data) => {
     modal.className = "modal";
 
     // -- DIV HEADER
-    // add pokemon button and exit button 
+    // Add pokemon button and exit button 
     modal.innerHTML += `
-        <div class='modal-header'>
-            <button onclick='addPokemon()'>Add Pokemon</button>
+       <div class='modal-header'>
+            ${!added ? `<button onclick='addPokemon()'>Add Pokemon</button>` : `<button onclick='removePokemon(event)'>Remove Pokemon</button>`}
             <button onclick='closeModal()'>x</button>
         </div>
     `;
 
     // -- DIV BODY
-    //Add image, height, and weight 
+    // Add image, height, and weight 
     let details = "";
     details += `<div class='left'>
-                    <img alt="Image of Pokemon" src=${data.sprites.front_default} />
+                    <img alt="Image of Pokemon" src=${ selectedPokemon.image } />
                 </div>`;
     details += "<div class='right'>"
-    details += `<div>${data.name.replaceAll('-', ' ')}</div>`;
-    details += `<div>Height: ${data.height}</div>`;
-    details += `<div>Weight: ${data.weight}</div>`;
+    details += `<div>${ selectedPokemon.name }</div>`;
+    details += `<div>Height: ${ selectedPokemon.height }</div>`;
+    details += `<div>Weight: ${ selectedPokemon.weight }</div>`;
     // Add pokemon types and colors
     let types = "";
-    data.types.forEach(type => {
-        const name = type.type.name;
-        let color = "";
-        switch (name) {
-            case "electric":
-                color = "#f7e752";
-                break;
-            case "fire":
-                color = "#ff9441";
-                break;
-            case "water":
-                color = "#5a8ccd";
-                break;
-            case "grass":
-                color = "#a4d641";
-                break;
-            case "bug":
-                color = "#f6ee8b";
-                break;
-            case "poison":
-                color = "#eea5d5";
-                break;
-            case "flying":
-                color = "#ac7b5a";
-                break;
-            case "normal":
-                color = "#e6bd9c";
-                break;
-            case "fairy":
-                color = "#e67384";
-                break;
-            case "fighting":
-                color = "#bd314a";
-                break;
-            case "psychic":
-                color = "#6ab4e6";
-                break;
-            case "rock":
-                color = "#626a20";
-                break;
-            case "ground":
-                color = "#d5ac20";
-                break;
-            case "dark":
-                color = "#62637b";
-                break;
-            case "ice":
-                color = "#c5c6d6";
-                break;
-            case "dragon":
-                color = "#104a8b";
-                break;
-            case "ghost":
-                color = "#5a4b9c";
-                break;
-            case "steel":
-                color = "#ded5d5";
-                break;
-            default:
-                color: "white";
-        }
-
-        types += `<div class="capsule" style="background: ${color}">${name}</div>`;
+    selectedPokemon.types.forEach(type => {
+        types += `<div class="capsule" style="background: ${ type.color }">${ type.name }</div>`;
     })
+
     details +=
         `<div class='types'>
-            ${types}
+            ${ types }
         </div>`
     details += "</div>"
 
@@ -166,8 +147,8 @@ const createModal = (data) => {
 
     // Add pokemon stats
     let stats = "";
-    data.stats.forEach(stat => {
-        stats += `<div>${stat.stat.name.replaceAll("-", " ")}: ${stat.base_stat}</div>`;
+    selectedPokemon.stats.forEach(stat => {
+        stats += `<div>${ stat.name }: ${ stat.stat }</div>`;
     })
 
     modal.innerHTML +=
@@ -177,8 +158,8 @@ const createModal = (data) => {
 
     // Add pokemon abilities
     let abilities = "";
-    data.abilities.forEach(ability => {
-        abilities += `<div class="capsule">${ability.ability.name.replaceAll("-", " ")}</div>`;
+    selectedPokemon.abilities.forEach(ability => {
+        abilities += `<div class="capsule">${ ability }</div>`;
     })
 
     modal.innerHTML +=
@@ -191,9 +172,73 @@ const createModal = (data) => {
     document.body.appendChild(modal);
 }
 
+// -- CLOSE MODAL
 const closeModal = () => {
     document.getElementById('modal').remove();
 }
+
 const addPokemon = () => {
-    document.getElementById('addpokemon');
+    closeModal();
+    let added = false;
+    Array.from(document.getElementsByClassName("team-member")).forEach(member => {
+        const content = member.innerHTML;
+        if (content === "" && !added) {
+            teamMembers.push(selectedPokemon)
+            member.innerHTML = `<img src=${selectedPokemon.image} alt="Teammate Image"/>`;
+            added = true;
+        }
+    })
+}
+
+const removePokemon = (event) => {
+    closeModal();
+    teamMembers.forEach((teamMember, index) => {
+        if (teamMember === selectedPokemon) {
+            document.getElementsByClassName("team-member")[index].innerHTML = '';
+        }
+    })
+    teamMembers = teamMembers.filter((teamMember, index) => teamMember !== selectedPokemon);
+}
+
+const determineTypeColor = (name) => {
+    switch (name) {
+        case "electric":
+            return "#f7e752";
+        case "fire":
+            return "#ff9441";
+        case "water":
+            return "#5a8ccd";
+        case "grass":
+            return "#a4d641";
+        case "bug":
+            return "#f6ee8b";
+        case "poison":
+            return "#eea5d5";
+        case "flying":
+            return "#ac7b5a";
+        case "normal":
+            return "#e6bd9c";
+        case "fairy":
+            return "#e67384";
+        case "fighting":
+            return "#bd314a";
+        case "psychic":
+            return "#6ab4e6";
+        case "rock":
+            return "#626a20";
+        case "ground":
+            return "#d5ac20";
+        case "dark":
+            return "#62637b";
+        case "ice":
+            return "#c5c6d6";
+        case "dragon":
+            return "#104a8b";
+        case "ghost":
+            return "#5a4b9c";
+        case "steel":
+            return "#ded5d5";
+        default:
+            return "white";
+    }
 }
