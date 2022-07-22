@@ -38,8 +38,8 @@ main {
 .team-member {
     border: 1px solid black;
     border-radius: 50px;
-    width: 75px;
-    height: 75px;
+    width: 85px;
+    height: 85px;
     display: flex;
 }
 
@@ -149,8 +149,8 @@ img {
     background-image: linear-gradient(5deg, #416105D0 15%, #C850C0 50%, #FFCC10 100%);
     border: 2px solid whitesmoke;
     border-radius: 100px;
-    width: 71px;
-    height: 71px;
+    width: 81px;
+    height: 81px;
     display: flex;
     box-shadow: rgb(0 0 0 / 100%) 0px 0px 20px;
 }
